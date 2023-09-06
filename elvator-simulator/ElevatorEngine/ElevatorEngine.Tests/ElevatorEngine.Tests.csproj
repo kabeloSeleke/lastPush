@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ElevatorEngine.Api\ElevatorEngine.Api.csproj" />
     <ProjectReference Include="..\ElevatorEngine.Application\ElevatorEngine.Application.csproj" />
     <ProjectReference Include="..\ElevatorEngine.Domain\ElevatorEngine.Domain.csproj" />
     <ProjectReference Include="..\ElevatorEngine.Infrastructure\ElevatorEngine.Infrastructure.csproj" />

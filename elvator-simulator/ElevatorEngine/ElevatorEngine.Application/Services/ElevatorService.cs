@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ElevatorEngine.Application.DTOs;
-using ElevatorEngine.Application.Events;
 using ElevatorEngine.Application.Interfaces;
 using ElevatorEngine.Domain.Interfaces;
 using ElevatorEngine.Domain.Models;
@@ -13,15 +12,13 @@ namespace ElevatorEngine.Application.Services
     {
         private readonly IElevatorRepository _elevatorRepository;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IEventPublishService _eventPublisher;
+        private readonly IUnitOfWork _unitOfWork;    
         private readonly ILogger<ElevatorService> _logger;
-        public ElevatorService(IElevatorRepository elevatorRepository, IMapper mapper, IUnitOfWork unitOfWork, IEventPublishService eventPublisher, ILogger<ElevatorService> logger)
+        public ElevatorService(IElevatorRepository elevatorRepository, IMapper mapper, IUnitOfWork unitOfWork,  ILogger<ElevatorService> logger)
         {
             _elevatorRepository = elevatorRepository ?? throw new ArgumentNullException(nameof(elevatorRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-            _eventPublisher = eventPublisher ?? throw new ArgumentNullException(nameof(eventPublisher));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -66,15 +63,6 @@ namespace ElevatorEngine.Application.Services
                     _mapper.Map(elevatorDTO, existingElevator);
                     _elevatorRepository.UpdateElevator(existingElevator);
                     _unitOfWork.Commit();
-                    var elvatorEvent = new ElevatorEvent
-                    {
-                        ElevatorId = elevatorDTO.Id,
-                        Idempotency = Guid.NewGuid(),
-                        Message = "Elevator Updated",
-                        Timestamp = DateTime.Now,
-                        Elevator  = elevatorDTO
-                    };
-                    _eventPublisher.publishEvent(typeof(ElevatorEvent).Name, elvatorEvent);
                 }
             }
             catch (Exception ex)
@@ -98,17 +86,6 @@ namespace ElevatorEngine.Application.Services
 
                 _elevatorRepository.AddElevator(elevator);
                 _unitOfWork.Commit();
-
-                var elvatorEvent = new ElevatorEvent
-                {
-                    ElevatorId = elevatorDTO.Id,
-                    Idempotency = Guid.NewGuid(),
-                    Message = "Elevator Updated",
-                    Timestamp = DateTime.Now,
-                    Elevator = elevatorDTO
-                };
-                _eventPublisher.publishEvent(typeof(ElevatorEvent).Name, elvatorEvent);
-
                 return _mapper.Map<ElevatorDTO>(elevator);
             }
             catch (Exception ex)

@@ -10,7 +10,7 @@ namespace ElevatorEngine.Application.Mapper
         {
             CreateMap<Elevator, ElevatorDTO>().ReverseMap();
             CreateMap<Floor, FloorDTO>().ReverseMap();
-            CreateMap<MaintenanceRecord, MaintenanceRecordDTO>().ReverseMap();
+            
          
         }
     }

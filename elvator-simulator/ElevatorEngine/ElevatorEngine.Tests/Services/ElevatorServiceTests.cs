@@ -15,7 +15,6 @@ namespace ElevatorEngine.Tests.Services
     {
         private readonly ElevatorService _elevatorService;
         private readonly Mock<IElevatorRepository> _elevatorRepositoryMock = new Mock<IElevatorRepository>();
-        private readonly Mock<IEventPublishService> _eventPublishServiceMock = new Mock<IEventPublishService>();
         private readonly Mock<ILogger<ElevatorService>> _loggerMock = new Mock<ILogger<ElevatorService>>();   
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
         private readonly IMapper _mapper;
@@ -24,7 +23,7 @@ namespace ElevatorEngine.Tests.Services
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile()));
             _mapper = config.CreateMapper();
-            _elevatorService = new ElevatorService(_elevatorRepositoryMock.Object, _mapper, _unitOfWorkMock.Object, _eventPublishServiceMock.Object, _loggerMock.Object);
+            _elevatorService = new ElevatorService(_elevatorRepositoryMock.Object, _mapper, _unitOfWorkMock.Object, _loggerMock.Object);
         }
 
         [Fact]

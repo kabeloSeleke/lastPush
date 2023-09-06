@@ -24,9 +24,10 @@ namespace ElevatorEngine.Application.Services
                     _floorService.UpdateFloorOccupants(floorId, numOfPeople, direction);
 
                     var nearestElevator = _elevatorService.GetNearestAvailableElevator(floorId, direction);
-                    _elevatorService.SendNearestElevatorToFloor(nearestElevator.Id, floorId);
-                }
-                catch (Exception ex)
+                _elevatorService.SendNearestElevatorToFloor(nearestElevator.Id, direction);
+
+            }
+            catch (Exception ex)
                 { 
                     throw;
                 }

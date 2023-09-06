@@ -21,20 +21,11 @@ namespace ElevatorEngine.ConsoleApp
         public static void Main(string[] args)
         {
             using IHost host = CreateHostBuilder(args).Build();
-
             var services = host.Services;
-
-
             var elevatorService = services.GetRequiredService<IElevatorService>();
             var floorService = services.GetRequiredService<IFloorService>();
-
-            // Interact with services as required for the simulation.
-
-            // In Main method of Program.cs
             var simulationManager = services.GetRequiredService<SimulationManager>();
             simulationManager.Start();
-
-
             host.Run();
         }
 
@@ -47,7 +38,7 @@ namespace ElevatorEngine.ConsoleApp
         .ConfigureServices((hostContext, services) =>
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(hostContext.Configuration.GetConnectionString("ElevatorConnection")));
+            options.UseSqlServer(hostContext.Configuration.GetConnectionString("ElevatorConnection")));
             services.AddAutoMapper(typeof(Program));
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
             services.AddTransient<IFloorRepository, FloorRepository>();
@@ -56,7 +47,6 @@ namespace ElevatorEngine.ConsoleApp
             services.AddScoped<IElevatorService, ElevatorService>();
             services.AddScoped<IFloorService, FloorService>();
             services.AddTransient<IElevatorOrchestratorService, ElevatorOrchestratorService>();
-            services.AddScoped<IEventPublishService, EventPublisher>();
             services.AddSingleton<SimulationManager>();
         });
     }

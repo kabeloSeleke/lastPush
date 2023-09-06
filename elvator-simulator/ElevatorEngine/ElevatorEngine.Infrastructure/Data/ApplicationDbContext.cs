@@ -7,8 +7,6 @@ namespace ElevatorEngine.Infrastructure.Data
     {
         public DbSet<Elevator> Elevators { get; set; }
         public DbSet<Floor> Floors { get; set; }
-        public DbSet<MaintenanceRecord> MaintenanceRecords { get; set; }
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
